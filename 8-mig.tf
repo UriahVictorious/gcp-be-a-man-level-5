@@ -1,26 +1,19 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_zones
 
-data "google_compute_zones" "brazil-available" {
-  status = "UP"
-  region = "southamerica-east1"
-}
-
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_region_instance_group_manager
-resource "google_compute_region_instance_group_manager" "brazil" {
-  name               = "brazil-mig"
-  region             = "southamerica-east1"
-  base_instance_name = "brazil"
-  target_size        = 3
+resource "google_compute_region_instance_group_manager" "uriah" { # Update
+  name               = "uriah-mig"                          # Update
+  region             = "us-south1"
+  base_instance_name = "uriah"                              # Update
+  target_size        = 2
 
   version {
-    instance_template = google_compute_instance_template.brazil-instance-template.id
-  }
+    instance_template = google_compute_instance_template.uriah-instance-template.self_link
+  } # Update
 
   distribution_policy_zones = [
-    "southamerica-east1-a",
-    "southamerica-east1-b",
-    "southamerica-east1-c"
-  ]
+    "us-south1-a",                                # Update
+    "us-south1-b"                                 # Update
+    ]
 
   named_port {
     name = "http"
@@ -28,7 +21,8 @@ resource "google_compute_region_instance_group_manager" "brazil" {
   }
 
   auto_healing_policies {
-    health_check      = google_compute_health_check.health-hc.id
-    initial_delay_sec = 60
+  health_check      = google_compute_health_check.tsa-health-check.id
+  initial_delay_sec = 180
   }
 }
+
