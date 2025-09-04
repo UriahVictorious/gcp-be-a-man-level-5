@@ -1,10 +1,10 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance_template
 
-resource "google_compute_instance_template" "brazil-instance-template" {
-  name         = "brazil"
-  description  = "Brazil Instance Template"
+resource "google_compute_instance_template" "uriah-instance-template" { # Update
+  name         = "uriah-instance-template"                 # Update
+  description  = "uriah instance template"                 # Update
   machine_type = "e2-medium"
-  region       = "southamerica-east1"
+  region       = "us-south1"                     # Update
 
   disk {
     source_image = "debian-cloud/debian-12"
@@ -12,11 +12,12 @@ resource "google_compute_instance_template" "brazil-instance-template" {
   }
 
   network_interface {
-    subnetwork = google_compute_subnetwork.bam5-private.id
+    subnetwork = google_compute_subnetwork.uriah-subnet.id  # Update
     access_config {}
   }
 
-  tags = ["bam5-internal"]
+  tags = ["uriah"]
 
-  metadata_startup_script = file("./movie.sh")
+  metadata_startup_script = file("./uriah.sh")              # Update
 }
+
